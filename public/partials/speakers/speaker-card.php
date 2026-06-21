@@ -114,9 +114,8 @@ if ( ! $formatted_end_time ) {
 <article class="wpfa-speaker-card <?php echo esc_attr( $is_featured_speaker ? 'is-featured' : '' ); ?>" itemscope itemtype="https://schema.org/Person" data-speaker-id="<?php echo esc_attr( $sid ); ?>">
 	<a class="wpfa-speaker-photo" href="<?php echo esc_url( $speaker_link ); ?>">
 		<?php if ( $photo_url ) : ?>
-			<?php /* translators: %s: Speaker name. */ ?>
 			<img src="<?php echo esc_url( $photo_url ); ?>"
-				alt="<?php echo esc_attr( sprintf( __( 'Photo of %s', 'wpfaevent' ), $name ) ); ?>"
+				alt="<?php /* translators: %s: Speaker name. */ echo esc_attr( sprintf( __( 'Photo of %s', 'wpfaevent' ), $name ) ); ?>"
 				loading="lazy"
 				itemprop="image"
 				onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />

@@ -1594,15 +1594,6 @@ class Wpfaevent_Admin {
 		wp_send_json_success();
 	}
 
-	/**
-	 * Handle Eventyay JSON:API speaker sync for the admin dashboard.
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function ajax_sync_eventyay() {
-		$this->get_eventyay_importer()->ajax_sync_eventyay();
-	}
 
 	/**
 	 * Render the speaker statistics dashboard page.

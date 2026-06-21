@@ -467,5 +467,3 @@ class Wpfaevent_Eventyay_Importer {
 		return $result;
 	}
 }
-
-
