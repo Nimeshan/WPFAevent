@@ -14,9 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$wpfaevent_is_embed = ! empty( $GLOBALS['wpfaevent_template_embed'] );
-$today              = current_time( 'Y-m-d' );
-$is_admin           = current_user_can( 'manage_options' );
+$wpfaevent_is_embed  = ! empty( $GLOBALS['wpfaevent_template_embed'] );
+$today               = current_time( 'Y-m-d' );
+$events_per_page     = max( 1, (int) apply_filters( 'wpfa_events_per_page', 10 ) );
+$current_page        = max( 1, (int) get_query_var( 'paged', 1 ) );
+$can_manage_content  = Wpfaevent_Roles::current_user_can_manage_dashboard();
+$can_publish_content = Wpfaevent_Roles::current_user_can_publish_content();
 
 // Pull all published event IDs.
 $event_ids = get_posts(
@@ -37,7 +40,8 @@ foreach ( $event_ids as $eid ) {
 	$end      = sanitize_text_field( get_post_meta( $eid, 'wpfa_event_end_date', true ) );
 	$is_valid = ! empty( $start );
 
-	if ( ! $is_valid && $is_admin ) {
+	// Admins can see items even if the start date metadata is missing or broken.
+	if ( ! $is_valid && $can_manage_content ) {
 		$upcoming_events[] = array(
 			'id'      => (int) $eid,
 			'start'   => '',
@@ -165,6 +169,11 @@ $header_vars = array(
 						<p class="events-hub-eyebrow"><?php esc_html_e( 'EVENT DIRECTORY', 'wpfaevent' ); ?></p>
 						<h1><?php esc_html_e( 'Open source events from the FOSSASIA community', 'wpfaevent' ); ?></h1>
 						<p class="events-hub-subtitle"><?php esc_html_e( 'Search by event name, topic, track, date, location, and language and find the right event faster.', 'wpfaevent' ); ?></p>
+						<?php if ( $can_publish_content ) : ?>
+							<button id="createEventBtn" class="btn btn-primary" style="margin-top: 15px;">
+								<?php esc_html_e( 'Create Custom Event', 'wpfaevent' ); ?>
+							</button>
+						<?php endif; ?>
 					</div>
 					<div class="events-hub-stat-box">
 						<span class="events-hub-stat-number"><?php echo esc_html( $total_events ); ?></span>
@@ -280,7 +289,7 @@ $header_vars = array(
 <?php endif; ?>
 
 <?php
-if ( $is_admin ) {
+if ( $can_manage_content ) {
 	include WPFAEVENT_PATH . 'public/partials/events/event-modal.php';
 }
 ?>
