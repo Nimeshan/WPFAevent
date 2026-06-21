@@ -84,6 +84,7 @@ class Wpfaevent {
 		$this->define_cpt_hooks();
 		$this->define_taxonomy_hooks();
 		$this->define_meta_hooks();
+		$this->define_page_hooks();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
@@ -126,6 +127,8 @@ class Wpfaevent {
 
 		// Calendar export support.
 		require_once plugin_dir_path( __FILE__ ) . 'class-wpfaevent-calendar.php';
+		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-wpfaevent-event-navigation-helper.php';
+		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-wpfaevent-additional-information-helper.php';
 		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-wpfaevent-schedule-helper.php';
 		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-wpfaevent-schedule-controller.php';
 		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-wpfaevent-partner-helper.php';
@@ -140,6 +143,13 @@ class Wpfaevent {
 		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-ajax-controller.php';
 
 		// Admin and Public classes.
+		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-jsonapi-parser.php';
+		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-partner-json-store.php';
+		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-event-repository.php';
+		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-speaker-repository.php';
+		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-eventyay-api-client.php';
+		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-admin-settings-renderer.php';
+		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-ajax-controller.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wpfaevent-eventyay-importer.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wpfaevent-eventyay-ajax-sync.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wpfaevent-admin.php';
@@ -195,6 +205,17 @@ class Wpfaevent {
 
 		// Register Speaker meta fields.
 		$this->loader->add_action( 'init', 'Wpfaevent_Meta_Speaker', 'register' );
+	}
+
+	/**
+	 * Register hooks for plugin-managed pages.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_page_hooks() {
+		$this->loader->add_action( 'init', 'Wpfaevent_Additional_Information_Helper', 'ensure_additional_information_page', 21 );
+		$this->loader->add_action( 'init', 'Wpfaevent_Partner_Helper', 'ensure_partner_page', 22 );
 	}
 
 	/**
