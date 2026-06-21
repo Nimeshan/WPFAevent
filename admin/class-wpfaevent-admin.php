@@ -933,24 +933,6 @@ class Wpfaevent_Admin {
 		update_post_meta( $post_id, $meta_key, $post_ids );
 	}
 
-	/**
-	 * Update a meta key when it has content, otherwise delete it.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int    $post_id Post ID.
-	 * @param string $key     Meta key.
-	 * @param string $value   Meta value.
-	 * @return void
-	 */
-	private function update_or_delete_post_meta( $post_id, $key, $value ) {
-		if ( '' === $value ) {
-			delete_post_meta( $post_id, $key );
-			return;
-		}
-
-		update_post_meta( $post_id, $key, $value );
-	}
 
 	/**
 	 * Save Speaker meta box data.
