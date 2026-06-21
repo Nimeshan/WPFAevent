@@ -468,4 +468,6 @@ class Wpfaevent_Eventyay_Importer {
 	}
 }
 
+}
+
 

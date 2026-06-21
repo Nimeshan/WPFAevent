@@ -75,6 +75,11 @@ $event_url = esc_url( get_permalink( $event_id ) );
 
 // Speakers page URL — link to /speakers/ filtered by event post ID.
 $speakers_url = esc_url( add_query_arg( 'event_id', $event_id, home_url( '/speakers/' ) ) );
+
+$can_manage_content  = class_exists( 'Wpfaevent_Roles' ) && Wpfaevent_Roles::current_user_can_manage_dashboard();
+$can_delete_content  = class_exists( 'Wpfaevent_Roles' ) && Wpfaevent_Roles::current_user_can_delete_content();
+$can_edit_this_event = $can_manage_content && current_user_can( 'edit_post', $event_id );
+$can_delete_event    = $can_delete_content && current_user_can( 'delete_post', $event_id );
 ?>
 
 <div class="event-card"
@@ -94,7 +99,6 @@ $speakers_url = esc_url( add_query_arg( 'event_id', $event_id, home_url( '/speak
 	data-timezone="<?php echo esc_attr( $event_timezone ); ?>"
 	data-all-day="<?php echo esc_attr( $event_all_day ? '1' : '0' ); ?>"
 	data-time="<?php echo esc_attr( $event_time_value ); ?>">
-
 
 	<a href="<?php echo esc_url( $event_url ); ?>" class="event-card-thumb" tabindex="-1" aria-hidden="true">
 		<?php if ( $featured_img_url ) : ?>
