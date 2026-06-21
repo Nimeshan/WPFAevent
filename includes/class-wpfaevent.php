@@ -128,6 +128,7 @@ class Wpfaevent {
 		require_once plugin_dir_path( __FILE__ ) . 'class-wpfaevent-calendar.php';
 		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-wpfaevent-schedule-helper.php';
 		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-wpfaevent-schedule-controller.php';
+		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-wpfaevent-partner-helper.php';
 
 		// Eventyay Importer modular classes.
 		require_once plugin_dir_path( __FILE__ ) . 'eventyay-importer/class-wpfaevent-jsonapi-parser.php';
