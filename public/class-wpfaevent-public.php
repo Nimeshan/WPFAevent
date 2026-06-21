@@ -78,6 +78,7 @@ class Wpfaevent_Public {
 			'page-schedule.php',
 			'page-speakers.php',
 			'page-landing.php',
+			'admin-dashboard.php',
 		);
 
 		foreach ( $wpfa_templates as $template ) {
@@ -423,7 +424,7 @@ class Wpfaevent_Public {
 			wp_enqueue_style( $this->plugin_name . '-code-of-conduct' );
 		}
 
-		if ( $this->is_wpfa_template_file_active( 'page-speakers.php' ) ) {
+		if ( $this->is_wpfa_template_file_active( 'page-speakers.php' ) || is_post_type_archive( 'wpfa_speaker' ) ) {
 			wp_enqueue_style( $this->plugin_name . '-speakers' );
 			wp_enqueue_script( $this->plugin_name . '-speakers' );
 		}
