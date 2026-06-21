@@ -212,6 +212,47 @@
 	color: #fff;
 }
 
+.wpfaevent .wpfa-event-cfs {
+	align-items: center;
+	background: #edf5fc;
+	border: 1px solid var(--event-line);
+	border-radius: var(--event-radius);
+	color: var(--event-primary-dark);
+	display: flex;
+	font-size: 1.12rem;
+	font-weight: 800;
+	justify-content: center;
+	line-height: 1.2;
+	margin-top: 10px;
+	min-height: 46px;
+	padding: 12px 18px;
+	text-align: center;
+	width: 100%;
+}
+
+.wpfaevent .wpfa-event-cfs:hover {
+	background: #dcebf7;
+	color: var(--event-primary-dark);
+}
+
+.wpfaevent .wpfa-event-cfs-closed {
+	align-items: center;
+	background: var(--event-soft);
+	border: 1px solid var(--event-line);
+	border-radius: var(--event-radius);
+	color: var(--event-muted);
+	display: flex;
+	font-size: 1rem;
+	font-weight: 700;
+	justify-content: center;
+	line-height: 1.2;
+	margin-top: 10px;
+	min-height: 46px;
+	padding: 12px 18px;
+	text-align: center;
+	width: 100%;
+}
+
 .wpfaevent .wpfa-event-calendar-link {
 	align-items: center;
 	background: #fff;

@@ -37,6 +37,8 @@ $schedule_items                           = $event_data['schedule_items'];
 $about_content                            = $event_data['about_content'];
 $register_url                             = $event_data['register_url'];
 $register_text                            = $event_data['register_text'];
+$cfs_url                                  = $event_data['cfs_url'];
+$cfs_text                                 = $event_data['cfs_text'];
 $event_google_url                         = $event_data['event_google_url'];
 $event_calendar_url                       = $event_data['event_calendar_url'];
 $speaker_count                            = $event_data['speaker_count'];
@@ -153,6 +155,15 @@ $current_schedule_view                    = $event_data['current_schedule_view']
 						<a class="wpfa-event-register" href="<?php echo esc_url( $register_url ); ?>" target="_blank" rel="noopener">
 							<?php echo esc_html( $register_text ); ?>
 						</a>
+					<?php endif; ?>
+					<?php if ( ! empty( $cfs_url ) ) : ?>
+						<a class="wpfa-event-cfs" href="<?php echo esc_url( $cfs_url ); ?>" target="_blank" rel="noopener">
+							<?php echo esc_html( $cfs_text ); ?>
+						</a>
+					<?php else : ?>
+						<div class="wpfa-event-cfs-closed">
+							<?php esc_html_e( 'Call for Speakers is closed', 'wpfaevent' ); ?>
+						</div>
 					<?php endif; ?>
 					<?php if ( $event_google_url ) : ?>
 						<a class="wpfa-event-calendar-link" href="<?php echo esc_url( $event_google_url ); ?>" target="_blank" rel="noopener">

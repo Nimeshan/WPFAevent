@@ -438,6 +438,15 @@ class Wpfaevent_Event_Template_Controller {
 		$register_text = ! empty( $site_settings['reg_button_text'] ) ? sanitize_text_field( $site_settings['reg_button_text'] ) : __( 'Get Tickets', 'wpfaevent' );
 		$register_url  = ! empty( $site_settings['reg_button_link'] ) ? esc_url_raw( $site_settings['reg_button_link'] ) : $event_url;
 
+		$cfs_text = ! empty( $site_settings['cfs_button_text'] ) ? sanitize_text_field( $site_settings['cfs_button_text'] ) : __( 'Call for Speakers', 'wpfaevent' );
+		$cfs_url  = ! empty( $site_settings['cfs_button_link'] ) ? esc_url_raw( $site_settings['cfs_button_link'] ) : '';
+		if ( empty( $cfs_url ) ) {
+			$meta_cfs = get_post_meta( $event_id, 'wpfa_event_cfs_link', true );
+			if ( ! empty( $meta_cfs ) ) {
+				$cfs_url = esc_url_raw( $meta_cfs );
+			}
+		}
+
 		$event_calendar_data = class_exists( 'Wpfaevent_Calendar' ) ? Wpfaevent_Calendar::get_event_calendar_data( $event_id ) : array();
 		$event_calendar_data = is_wp_error( $event_calendar_data ) ? array() : $event_calendar_data;
 		$event_calendar_url  = ! empty( $event_calendar_data ) && class_exists( 'Wpfaevent_Calendar' ) ? Wpfaevent_Calendar::get_event_ics_url( $event_id ) : '';
@@ -761,6 +770,8 @@ class Wpfaevent_Event_Template_Controller {
 			'about_content'                            => $about_content,
 			'register_url'                             => $register_url,
 			'register_text'                            => $register_text,
+			'cfs_url'                                  => $cfs_url,
+			'cfs_text'                                 => $cfs_text,
 			'event_google_url'                         => $event_google_url,
 			'event_calendar_url'                       => $event_calendar_url,
 			'speaker_count'                            => $speaker_count,
@@ -832,6 +843,8 @@ class Wpfaevent_Event_Template_Controller {
 			'about_content'                            => '',
 			'register_url'                             => '',
 			'register_text'                            => '',
+			'cfs_url'                                  => '',
+			'cfs_text'                                 => '',
 			'event_google_url'                         => '',
 			'event_calendar_url'                       => '',
 			'speaker_count'                            => 0,

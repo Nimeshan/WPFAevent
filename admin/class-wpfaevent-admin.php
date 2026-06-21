@@ -221,10 +221,21 @@ class Wpfaevent_Admin {
 			array( $this, 'render_speaker_events_page' )
 		);
 
+		$speakers_count = wp_count_posts( 'wpfa_speaker' );
+		$total_count    = isset( $speakers_count->publish ) ? (int) $speakers_count->publish : 0;
+		$menu_title     = esc_html__( 'Dashboard', 'wpfaevent' );
+		if ( $total_count > 0 ) {
+			$menu_title .= sprintf(
+				' <span class="update-plugins count-%1$d"><span class="plugin-count">%2$s</span></span>',
+				$total_count,
+				number_format_i18n( $total_count )
+			);
+		}
+
 		add_submenu_page(
 			'edit.php?post_type=wpfa_speaker',
 			esc_html__( 'Speaker Dashboard', 'wpfaevent' ),
-			esc_html__( 'Dashboard', 'wpfaevent' ),
+			$menu_title,
 			'edit_speakers',
 			'wpfa-speaker-dashboard',
 			array( $this, 'render_speaker_dashboard_page' )

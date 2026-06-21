@@ -1029,7 +1029,11 @@ class Wpfaevent_Eventyay_Ajax_Sync {
 		}
 
 		$base_url = ! empty( $settings['base_url'] ) ? $settings['base_url'] : 'https://api.eventyay.com';
-		$api_url  = trailingslashit( $base_url ) . 'v1/events/' . $event_slug . '/sessions?include=speakers,track&page[size]=200';
+		$api_path = 'v1/events/' . $event_slug . '/sessions?include=speakers,track&page[size]=200';
+		if ( false !== strpos( $base_url, 'eventyay.com' ) && false === strpos( $base_url, 'api.eventyay.com' ) ) {
+			$api_path = 'api/' . $api_path;
+		}
+		$api_url = trailingslashit( $base_url ) . $api_path;
 
 		$api_url = $this->prepare_eventyay_sync_url( $api_url );
 		if ( is_wp_error( $api_url ) ) {

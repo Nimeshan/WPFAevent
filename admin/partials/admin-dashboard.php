@@ -234,7 +234,7 @@ if ( isset( $_GET['return_to'] ) ) {
         <div class="dashboard-tabs">
             <?php if ($event_id): ?>
                 <div class="dashboard-tab active" data-panel="sync">Data Sync</div>
-                <div class="dashboard-tab" data-panel="speakers">Manage Speakers</div>
+                <div class="dashboard-tab" data-panel="speakers">Manage Speakers <span class="wpfa-speaker-count">(<?php echo count( $speakers_data ); ?>)</span></div>
                 <div class="dashboard-tab" data-panel="schedule">Manage Schedule</div>
                 <div class="dashboard-tab" data-panel="about">About Section</div>
                 <div class="dashboard-tab" data-panel="visibility">Section Visibility</div>
@@ -1382,6 +1382,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!container || !sortSelect || !searchInput) return;
 
         const render = () => {
+            const speakersTab = document.querySelector('.dashboard-tab[data-panel="speakers"]');
+            if (speakersTab) {
+                speakersTab.innerHTML = `Manage Speakers <span class="wpfa-speaker-count">(${store.speakers.length})</span>`;
+            }
+
             container.innerHTML = '';
             const searchTerm = searchInput.value.toLowerCase();
             const sortValue = sortSelect.value;
