@@ -860,6 +860,8 @@ class Wpfaevent_Admin {
 		echo '<div class="notice notice-warning is-dismissible"><p>';
 		echo esc_html__(
 			'WPFA Event page templates require a classic theme. Block themes (e.g., Twenty Twenty-Five) do not support PHP page templates.',
+			'wpfaevent'
+		);
 		echo '</p></div>';
 	}
 
