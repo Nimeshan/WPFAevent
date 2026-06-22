@@ -278,18 +278,29 @@ class Wpfaevent_Eventyay_Ajax_Sync {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $api_url Eventyay API URL.
+	 * @param string $api_url   Eventyay API URL.
+	 * @param string $api_token Optional API token for Authorization header.
 	 * @return array|WP_Error
 	 */
-	private function fetch_eventyay_json( $api_url ) {
+	private function fetch_eventyay_json( $api_url, $api_token = '' ) {
+		$headers = array(
+			'Accept' => 'application/vnd.api+json, application/json',
+		);
+
+		$api_token = trim( (string) $api_token );
+		if ( '' !== $api_token ) {
+			if ( ! preg_match( '/^(Token|JWT|Bearer)\s+/i', $api_token ) ) {
+				$api_token = 'JWT ' . $api_token;
+			}
+			$headers['Authorization'] = $api_token;
+		}
+
 		$response = wp_remote_get(
 			$api_url,
 			array(
 				'timeout'     => 20,
 				'redirection' => 3,
-				'headers'     => array(
-					'Accept' => 'application/vnd.api+json, application/json',
-				),
+				'headers'     => $headers,
 			)
 		);
 
@@ -1023,7 +1034,9 @@ class Wpfaevent_Eventyay_Ajax_Sync {
 	 * @return true|WP_Error
 	 */
 	public function sync_speakers_for_event( $event_id, $event_slug, $settings ) {
-		$event_id = absint( $event_id );
+		$event_id  = absint( $event_id );
+		$api_token = ! empty( $settings['api_token'] ) ? $settings['api_token'] : '';
+
 		if ( ! $event_id ) {
 			return new WP_Error( 'invalid_event_id', __( 'Invalid event ID.', 'wpfaevent' ) );
 		}
@@ -1042,12 +1055,29 @@ class Wpfaevent_Eventyay_Ajax_Sync {
 
 		$this->persist_eventyay_sync_url( $event_id, $api_url );
 
-		$payload = $this->fetch_eventyay_json( $api_url );
+		$payload = $this->fetch_eventyay_json( $api_url, $api_token );
 		if ( is_wp_error( $payload ) ) {
 			return $payload;
 		}
 
 		$import = $this->parser->normalize_eventyay_payload( $payload );
+
+		// If the sessions endpoint returned no speakers, fall back to the dedicated speakers endpoint.
+		if ( is_wp_error( $import ) ) {
+			$speakers_path = 'v1/events/' . $event_slug . '/speakers?page[size]=200';
+			if ( false !== strpos( $base_url, 'eventyay.com' ) && false === strpos( $base_url, 'api.eventyay.com' ) ) {
+				$speakers_path = 'api/' . $speakers_path;
+			}
+			$speakers_url = trailingslashit( $base_url ) . $speakers_path;
+
+			if ( wp_http_validate_url( $speakers_url ) ) {
+				$speakers_payload = $this->fetch_eventyay_json( $speakers_url, $api_token );
+				if ( ! is_wp_error( $speakers_payload ) ) {
+					$import = $this->parser->normalize_eventyay_payload( $speakers_payload );
+				}
+			}
+		}
+
 		if ( is_wp_error( $import ) ) {
 			return $import;
 		}
