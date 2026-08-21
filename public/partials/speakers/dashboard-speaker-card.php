@@ -22,6 +22,11 @@ $speaker_social      = isset( $speaker['social'] ) && is_array( $speaker['social
 $session             = ! empty( $speaker['sessions'][0] ) && is_array( $speaker['sessions'][0] ) ? $speaker['sessions'][0] : array();
 $placeholder_url     = ! empty( $speaker_placeholder_url ) ? $speaker_placeholder_url : WPFAEVENT_URL . 'assets/images/speaker-placeholder.svg';
 $is_featured_speaker = ! empty( $wpfa_dashboard_speaker_is_featured ) || ! empty( $speaker['featured'] );
+$position            = isset( $speaker['position'] ) ? sanitize_text_field( $speaker['position'] ) : '';
+$speaker_title       = isset( $speaker['title'] ) ? sanitize_text_field( $speaker['title'] ) : '';
+$organization        = isset( $speaker['organization'] ) ? sanitize_text_field( $speaker['organization'] ) : '';
+$speaker_role_source = $position ? $position : $speaker_title;
+$speaker_role        = trim( $speaker_role_source . ( $speaker_role_source && $organization ? ', ' : '' ) . $organization );
 ?>
 <article class="wpfa-speaker-card visible <?php echo esc_attr( $is_featured_speaker ? 'is-featured' : '' ); ?>">
 	<div class="wpfa-speaker-photo">
@@ -46,9 +51,9 @@ $is_featured_speaker = ! empty( $wpfa_dashboard_speaker_is_featured ) || ! empty
 		<?php endif; ?>
 
 		<h3 class="wpfa-speaker-name"><?php echo esc_html( $speaker_name ); ?></h3>
-		<?php if ( ! empty( $speaker['position'] ) || ! empty( $speaker['organization'] ) ) : ?>
+		<?php if ( '' !== $speaker_role ) : ?>
 			<p class="wpfa-speaker-role">
-				<?php echo esc_html( trim( ( $speaker['position'] ?? '' ) . ( ! empty( $speaker['position'] ) && ! empty( $speaker['organization'] ) ? ' | ' : '' ) . ( $speaker['organization'] ?? '' ) ) ); ?>
+				<?php echo esc_html( $speaker_role ); ?>
 			</p>
 		<?php endif; ?>
 	</div>

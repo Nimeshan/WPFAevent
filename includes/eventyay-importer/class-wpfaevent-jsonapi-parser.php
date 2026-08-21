@@ -1743,7 +1743,7 @@ class Wpfaevent_JSONAPI_Parser {
 			);
 		}
 
-		$position     = $this->attribute_value( $attributes, array( 'position', 'job-title', 'designation' ) );
+		$position     = $this->attribute_value( $attributes, array( 'position', 'job-title', 'job_title', 'designation', 'title' ) );
 		$organization = $this->attribute_value( $attributes, array( 'organisation', 'organization', 'company' ) );
 		$category     = $this->attribute_value( $attributes, array( 'category', 'track' ) );
 
